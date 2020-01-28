@@ -1,7 +1,14 @@
 #include <iostream>
+#include <string>
 #include "symtab.h"
+#include "iterator.h"
 
 using namespace std;
+
+void DisplayElement(string key, void *value, void *clientData)
+{
+    cout << "[" << key << "]" << "---" << (char*)value << endl;
+}
 
 int main()
 {
@@ -19,5 +26,14 @@ int main()
     cout << "new daqui:" << (char *)Lookup(table, "daqui") << endl;
     cout << "yangchaolong" << (char *)Lookup(table, "yangchaolong") << endl;
 
+    //MapSymbolTable(DisplayElement, table, NULL);
+
+    iteratorADT iter = NewIterator(table);
+    string tempKey;
+    cout << "iterator:" << endl;
+    while(StepIterator(iter, tempKey)){
+        cout << "key:" << tempKey << "  value:" << (char *)Lookup(table, tempKey) << endl;
+    }
+    FreeIterator(iter);
     FreeSymbolTable(table);
 }

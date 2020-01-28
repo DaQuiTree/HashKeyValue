@@ -69,6 +69,18 @@ void *Lookup(symtabADT table, string key)
     return cp->value;
 }
 
+void MapSymbolTable(symtabFnT fn, symtabADT table, void *clientData)
+{
+    for(int i = 0; i < NBuckets; i++){
+        cellT *cp = table->buckets[i];
+        while(cp != NULL){
+            fn(cp->key, cp->value, clientData);
+            cp = cp->link;
+        }
+    } 
+}
+
+/*private impletement*/
 static void FreeBucketChain(cellT *cp)
 {
     cellT *np;
@@ -109,4 +121,5 @@ static int Hash(string s, int nBuckets)
 
     return(nbucket);
 }
+
 
